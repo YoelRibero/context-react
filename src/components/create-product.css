@@ -1,0 +1,19 @@
+.product-form {
+    margin-bottom: 2rem;
+    display: flex;
+}
+
+.product-form input {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 0;
+}
+
+.product-form button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
