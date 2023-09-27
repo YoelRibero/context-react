@@ -22,12 +22,12 @@ const myProduct = {
 };
 
 const mySetProduct = {
-    setProduct: (action: ProductAction): void => {},
+    setProduct: (action: ProductAction): void => {action},
 }
 
 const myFavorite = {
     favorite: defaultFavoriteData,
-    setFavorite: (action: FavoriteAction): void => {}
+    setFavorite: (action: FavoriteAction): void => {action}
 }
 
 const ProductContext = createContext<{product: ProductData}>(myProduct)
