@@ -1,10 +1,11 @@
 import { useRef } from 'react';
-import { useProduct } from 'context/product.context';
+import { useProductDispatch, useProductSeparate } from 'context/product.context';
 import './create-product.css';
 
 const CreateProduct: React.FC = () => {
     const inputRef = useRef<HTMLInputElement>(null);
-    const { products: { product }, setProducts: { setProduct } } = useProduct();
+    const { product } = useProductSeparate();
+    const { setProduct } = useProductDispatch();
 
     const handleCreateProduct = () => {
         if (inputRef.current !== null && inputRef.current.value) {

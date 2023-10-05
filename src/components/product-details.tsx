@@ -1,6 +1,6 @@
 import React from 'react';
 import Product from 'types/product';
-import { useProduct } from 'context/product.context';
+import { useProductDispatch, useFavorite } from 'context/product.context';
 import './product-details.css'
 
 interface Props {
@@ -8,8 +8,8 @@ interface Props {
 }
 
 const ProductDetails: React.FC<Props> = ({ product }) => {
-    console.log('entró')
-    const { setProducts: { setProduct }, favorites: { favorite: { favorites }, setFavorite } } = useProduct();
+    const { setProduct } = useProductDispatch();
+    const { favorite: { favorites }, setFavorite } = useFavorite();
 
     const handleFavorite = (productId: number) => {
         setFavorite({ type: 'FAVORITES', favorites: productId})

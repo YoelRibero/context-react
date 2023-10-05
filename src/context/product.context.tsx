@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
 import products from 'constants/products';
 import ProductData from 'types/productData';
 import FavoriteData from 'types/favoritesData';
 import { ProductAction, FavoriteAction } from 'context/actions';
 import { productReducer, favoriteReducer } from 'context/reducer';
-import { getLocalData } from 'storage/dataStorage';
+import { getLocalData, saveLocalData } from 'storage/dataStorage';
 
 const productsData = getLocalData('products').length > 0 ? getLocalData('products') : products;
 const favoritesData = getLocalData('favorites');
@@ -39,24 +39,28 @@ interface Props {
 }
 
 export const ProductProvider: React.FC<Props> = ({ children }) => {
-    const [product, setProduct] = useReducer(productReducer, defaultValues);
+    const [product, setProduct] = useReducer(productReducer, defaultValues)
     const [favorite, setFavorite] = useReducer(favoriteReducer, defaultFavoriteData)
 
+    useEffect(() => {
+        saveLocalData('products', product.products)
+    }, [product.products])
+
+    useEffect(() => {
+        saveLocalData('favorites', favorite.favorites)
+    }, [favorite.favorites])
+
     return (
-        <ProductContext.Provider value={{ product }}>
-            <FavoritesContext.Provider value={{ favorite, setFavorite }}>
-                <ProductDispatchContext.Provider value={{ setProduct }}>
+        <ProductDispatchContext.Provider value={useMemo(() => ({ setProduct }), [setProduct])}>
+            <ProductContext.Provider value={useMemo(() => ({ product }), [product])}>
+                <FavoritesContext.Provider value={useMemo(() => ({ favorite, setFavorite }), [favorite, setFavorite])}>
                     {children}
-                </ProductDispatchContext.Provider>
-            </FavoritesContext.Provider>
-        </ProductContext.Provider>
+                </FavoritesContext.Provider>
+            </ProductContext.Provider>
+        </ProductDispatchContext.Provider>
     );
 };
 
-export const useProduct = () => {
-    return {
-        products: useContext(ProductContext),
-        setProducts: useContext(ProductDispatchContext),
-        favorites: useContext(FavoritesContext)
-    }
-};
+export const useProductSeparate = () => useContext(ProductContext)
+export const useProductDispatch = () => useContext(ProductDispatchContext)
+export const useFavorite = () => useContext(FavoritesContext)

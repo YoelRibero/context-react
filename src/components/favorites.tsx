@@ -1,11 +1,10 @@
 import Product from 'types/product';
-import { useProduct } from 'context/product.context';
+import { useProductSeparate, useFavorite } from 'context/product.context';
 import './favourites.css';
-import { useEffect } from 'react';
-import { saveLocalData } from '@/storage/dataStorage';
 
 const Favorites: React.FC = () => {
-    const { products: { product }, favorites: { favorite: { favorites } } } = useProduct();
+    const { product } = useProductSeparate();
+    const { favorite: { favorites } } = useFavorite();
     const myFavorites: Product[] = [];
 
     favorites.forEach((fav: number) => {
@@ -15,9 +14,6 @@ const Favorites: React.FC = () => {
         }
     });
 
-    useEffect(() => {
-        saveLocalData('favorites', favorites)
-    }, [favorites])
     return (
         <section className='favorites'>
             <h2>My Favorite products</h2>

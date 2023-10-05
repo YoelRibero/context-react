@@ -1,14 +1,10 @@
-import React, { useEffect } from "react";
-import { useProduct } from 'context/product.context';
+import React from "react";
+import { useProductSeparate } from "@/context/product.context";
 import ProductDetails from "./product-details";
-import { saveLocalData } from "@/storage/dataStorage";
 
-const ProductList: React.FC = () => {
-    const { products: { product } } = useProduct();
+const ProductList: React.FC = React.memo(() => {
+    const { product } = useProductSeparate();
 
-    useEffect(() => {
-        saveLocalData('products', product.products)
-    }, [product.products])
     return (
         <section className="product-container">
             {product.products.map((product) => (
@@ -16,6 +12,6 @@ const ProductList: React.FC = () => {
             ))}
         </section>
     );
-};
+});
 
 export default ProductList;
